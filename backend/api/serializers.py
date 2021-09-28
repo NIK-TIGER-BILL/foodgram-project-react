@@ -1,6 +1,7 @@
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from users.serilizers import CustomUserSerializer
+from users.model import Follow
 from .models import Ingredient, IngredientAmount, Recipe, Tag
 
 
@@ -16,16 +17,16 @@ class IngredientSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class IngredientAmountSerializer(serializers.ModelSerializer):
-#     id = serializers.ReadOnlyField(source='ingredient.id')
-#     name = serializers.ReadOnlyField(source='ingredient.name')
-#     measurement_unit = serializers.ReadOnlyField(
-#         source='ingredient.measurement_unit'
-#     )
-#
-#     class Meta:
-#         model = IngredientAmount
-#         fields = ('id', 'name', 'measurement_unit', 'amount')
+class IngredientAmountSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='ingredient.id')
+    name = serializers.ReadOnlyField(source='ingredient.name')
+    measurement_unit = serializers.ReadOnlyField(
+        source='ingredient.measurement_unit'
+    )
+
+    class Meta:
+        model = IngredientAmount
+        fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -122,34 +123,32 @@ class RecipeMinifiedSerializer(serializers.ModelSerializer):
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField(source='subscriber.id')
-    email = serializers.ReadOnlyField(source='subscriber.email')
-    username = serializers.ReadOnlyField(source='subscriber.username')
-    first_name = serializers.ReadOnlyField(source='subscriber.first_name')
-    last_name = serializers.ReadOnlyField(source='subscriber.last_name')
+    id = serializers.ReadOnlyField(source='author.id')
+    email = serializers.ReadOnlyField(source='author.email')
+    username = serializers.ReadOnlyField(source='author.username')
+    first_name = serializers.ReadOnlyField(source='author.first_name')
+    last_name = serializers.ReadOnlyField(source='author.last_name')
     is_subscribed = serializers.SerializerMethodField()
     recipes = serializers.SerializerMethodField()
     recipes_count = serializers.SerializerMethodField()
 
     class Meta:
-        model = Subscribe
+        model = Follow
         fields = ('id', 'email', 'username', 'first_name', 'last_name',
                   'is_subscribed', 'recipes', 'recipes_count')
 
     def get_is_subscribed(self, obj):
-        return Subscribe.objects.filter(
-            user=obj.user, subscriber=obj.subscriber
+        return Follow.objects.filter(
+            user=obj.user, author=obj.author
         ).exists()
 
     def get_recipes(self, obj):
         request = self.context.get('request')
-        limit = request.GET.get('recipes_limit')
-        queryset = Recipe.objects.filter(author=obj.subscriber)
-        if limit is not None:
-            queryset = Recipe.objects.filter(
-                author=obj.subscriber
-            )[:int(limit)]
+        limit = int(request.GET.get('recipes_limit'))
+        queryset = Recipe.objects.filter(author=obj.author)
+        if limit:
+            queryset = queryset[:limit]
         return RecipeMinifiedSerializer(queryset, many=True).data
 
     def get_recipes_count(self, obj):
-        return Recipe.objects.filter(author=obj.subscriber).count()
+        return Recipe.objects.filter(author=obj.author).count()
