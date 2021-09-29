@@ -1,7 +1,8 @@
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
-from users.serilizers import CustomUserSerializer
-from users.model import Follow
+
+from users.models import Follow
+from users.serializers import CustomUserSerializer
 from .models import Ingredient, IngredientAmount, Recipe, Tag
 
 
@@ -51,13 +52,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         user = self.context.get('request').user
         if user.is_anonymous:
             return False
-        return obj.is_favorited
+        return Recipe.objects.filter(favorites__user=user, id=obj.id).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get('request').user
         if user.is_anonymous:
             return False
-        return obj.is_in_shopping_cart
+        return Recipe.objects.filter(cart__user=user, id=obj.id).exists()
 
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
@@ -113,7 +114,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return instance
 
 
-class RecipeMinifiedSerializer(serializers.ModelSerializer):
+class CropRecipeSerializer(serializers.ModelSerializer):
     image = Base64ImageField()
 
     class Meta:
@@ -122,7 +123,7 @@ class RecipeMinifiedSerializer(serializers.ModelSerializer):
         read_only_fields = ('id', 'name', 'image', 'cooking_time')
 
 
-class SubscribeSerializer(serializers.ModelSerializer):
+class FollowSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='author.id')
     email = serializers.ReadOnlyField(source='author.email')
     username = serializers.ReadOnlyField(source='author.username')
@@ -144,11 +145,12 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
     def get_recipes(self, obj):
         request = self.context.get('request')
-        limit = int(request.GET.get('recipes_limit'))
+        limit = request.GET.get('recipes_limit')
         queryset = Recipe.objects.filter(author=obj.author)
         if limit:
-            queryset = queryset[:limit]
-        return RecipeMinifiedSerializer(queryset, many=True).data
+            queryset = queryset[:int(limit)]
+        return CropRecipeSerializer(queryset, many=True).data
 
     def get_recipes_count(self, obj):
         return Recipe.objects.filter(author=obj.author).count()
+

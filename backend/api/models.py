@@ -12,6 +12,7 @@ class Ingredient(models.Model):
                                         verbose_name='Единица измерения')
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
 
@@ -41,6 +42,7 @@ class Tag(models.Model):
                             verbose_name='Уникальный слаг')
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
 
@@ -71,6 +73,11 @@ class Recipe(models.Model):
         validators=(validators.MinValueValidator(1),),
         verbose_name='Время приготовления')
 
+    class Meta:
+        ordering = ['-id']
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
+
 
 class IngredientAmount(models.Model):
     ingredient = models.ForeignKey(
@@ -89,6 +96,7 @@ class IngredientAmount(models.Model):
     )
 
     class Meta:
+        ordering = ['-id']
         verbose_name = 'Количество ингридиента'
         verbose_name_plural = 'Количество ингридиентов'
 
