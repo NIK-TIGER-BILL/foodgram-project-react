@@ -1,8 +1,8 @@
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
-
 from users.models import Follow
 from users.serializers import CustomUserSerializer
+
 from .models import Ingredient, IngredientAmount, Recipe, Tag
 
 
@@ -153,4 +153,3 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def get_recipes_count(self, obj):
         return Recipe.objects.filter(author=obj.author).count()
-

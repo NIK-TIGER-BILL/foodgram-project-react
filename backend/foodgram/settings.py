@@ -66,7 +66,6 @@ DATABASES = {
     }
 }
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -121,7 +120,7 @@ DJOSER = {
         'current_user': 'users.serializers.CustomUserSerializer',
     },
     'PERMISSIONS': {
-        'user': ('rest_framework.permissions.IsAuthenticated', ),
-        'user_list': ('rest_framework.permissions.AllowAny', )
+        'user': ('rest_framework.permissions.IsAuthenticated',),
+        'user_list': ('rest_framework.permissions.AllowAny',)
     }
 }
