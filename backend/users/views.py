@@ -29,7 +29,6 @@ class CustomUserViewSet(UserViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         follow = Follow.objects.create(user=user, author=author)
-        follow.save()
         serializer = FollowSerializer(
             follow, context={'request': request}
         )

@@ -70,7 +70,9 @@ class Recipe(models.Model):
         verbose_name='Теги',
     )
     cooking_time = models.PositiveSmallIntegerField(
-        validators=(validators.MinValueValidator(1),),
+        validators=(
+            validators.MinValueValidator(
+                1, message='Минимальное время приготовления 1 минута'),),
         verbose_name='Время приготовления')
 
     class Meta:
@@ -91,7 +93,9 @@ class IngredientAmount(models.Model):
         verbose_name='Рецепт',
     )
     amount = models.PositiveSmallIntegerField(
-        validators=(validators.MinValueValidator(1),),
+        validators=(
+            validators.MinValueValidator(
+                1, message='Минимальное количество ингридиентов 1'),),
         verbose_name='Количество',
     )
 
@@ -99,6 +103,10 @@ class IngredientAmount(models.Model):
         ordering = ['-id']
         verbose_name = 'Количество ингридиента'
         verbose_name_plural = 'Количество ингридиентов'
+        constraints = [
+            models.UniqueConstraint(fields=['ingredient', 'recipe'],
+                                    name='unique ingredients recipe')
+        ]
 
 
 class Favorite(models.Model):
@@ -118,6 +126,10 @@ class Favorite(models.Model):
         ordering = ['-id']
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранные'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'recipe'],
+                                    name='unique favorite recipe for user')
+        ]
 
 
 class Cart(models.Model):
@@ -138,3 +150,7 @@ class Cart(models.Model):
         ordering = ['-id']
         verbose_name = 'Корзина'
         verbose_name_plural = 'В корзине'
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'recipe'],
+                                    name='unique cart user')
+        ]
