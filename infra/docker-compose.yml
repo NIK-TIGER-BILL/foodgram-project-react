@@ -27,7 +27,7 @@ services:
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
-      - nginx
+      - db
 
   nginx:
     image: nginx:1.19.3
