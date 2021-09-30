@@ -10,12 +10,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from .filters import AuthorAndTagFilter
-from .models import Cart, Favorite, Ingredient, IngredientAmount, Recipe, Tag
-from .pagination import LimitPageNumberPagination
-from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from .serializers import (CropRecipeSerializer, IngredientSerializer,
-                          RecipeSerializer, TagSerializer)
+from api.filters import AuthorAndTagFilter
+from api.models import (Cart, Favorite, Ingredient, IngredientAmount, Recipe,
+                        Tag)
+from api.pagination import LimitPageNumberPagination
+from api.permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
+from api.serializers import (CropRecipeSerializer, IngredientSerializer,
+                             RecipeSerializer, TagSerializer)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):

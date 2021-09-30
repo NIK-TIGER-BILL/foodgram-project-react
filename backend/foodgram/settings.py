@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     'django_filters',
+    'csvimport.app.CSVImportConf'
 ]
 
 MIDDLEWARE = [
