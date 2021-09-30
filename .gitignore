@@ -130,3 +130,9 @@ dmypy.json
 
 # .idea
 .idea
+
+static/
+posts/static/
+media/
+media_value/
+static_value/
