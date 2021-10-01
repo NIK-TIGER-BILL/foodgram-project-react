@@ -43,7 +43,7 @@ docker-compose exec backend python manage.py load_ingredients ("Название
 
 ## команда для заполнения базы начальными данными
 ```
-docker-compose backend web python manage.py loaddata data/init_data.json 
+docker-compose exec backend python manage.py loaddata data/init_data.json 
 ```
 Данная команда загрузит начальные данные из фиксатуры
 
