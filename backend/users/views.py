@@ -17,15 +17,17 @@ class CustomUserViewSet(UserViewSet):
     pagination_class = LimitPageNumberPagination
 
     @action(detail=True, permission_classes=[IsAuthenticated])
-    def subscribe(self, request, pk=None):
+    def subscribe(self, request, id=None):
         user = request.user
-        author = get_object_or_404(User, id=pk)
+        author = get_object_or_404(User, id=id)
 
-        if (Follow.objects.filter(user=user, author=author)
-                .exists() or user == author):
+        if user == author:
             return Response({
-                'errors': ('Вы уже подписаны на этого пользователя '
-                           'или подписываетесь на самого себя')
+                'errors': 'Вы не можете подписываться на самого себя'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        if Follow.objects.filter(user=user, author=author).exists():
+            return Response({
+                'errors': 'Вы уже подписаны на этого пользователя '
             }, status=status.HTTP_400_BAD_REQUEST)
 
         follow = Follow.objects.create(user=user, author=author)
@@ -35,9 +37,13 @@ class CustomUserViewSet(UserViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @subscribe.mapping.delete
-    def del_subscribe(self, request, pk=None):
+    def del_subscribe(self, request, id=None):
         user = request.user
-        author = get_object_or_404(User, id=pk)
+        author = get_object_or_404(User, id=id)
+        if user == author:
+            return Response({
+                'errors': 'Вы не можете отписываться от самого себя'
+            }, status=status.HTTP_400_BAD_REQUEST)
         follow = Follow.objects.filter(user=user, author=author)
         if follow.exists():
             follow.delete()

@@ -1,42 +1,51 @@
-# Foodgram-project-react
+# Проект Foodgram
+Foodgram сделан для публикации рецептов. Авторизованные пользователи
+могут подписываться на понравившихся авторов, добавлять рецепты в избранное,
+в покупки, скачать список покупок ингредиентов для добавленных в покупки
+рецептов.
 
 ## команды для запуска приложения
+Можно использовать с флагами:  
+-d (убрать сообщение от логов)  
+--build (пересборка)
 ```
 docker-compose up
+docker-compose up -d --build
 ```
-Можно использовать с флагом -d, чтобы убрать сообщение от логов
 Может пригодится:
 ```
 docker-compose exec backend python manage.py migrate --noinput # Проведение миграции
 docker-compose exec backend python manage.py collectstatic --no-input  # Сбор статики
 ```
+.env
+```
+DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
+DB_NAME=postgres # имя базы данных
+POSTGRES_USER=postgres # логин для подключения к базе данных
+POSTGRES_PASSWORD=*** # пароль для подключения к БД(установите свой)
+DB_HOST=db # название сервиса
+DB_PORT=5432 # порт для подключения к БД
+DJ_SECRET_KEY=*** # ключ django
+```
 ## команда для создания суперпользователя
 ```
-docker-compose backend web python manage.py createsuperuser
+docker-compose exec backend python manage.py createsuperuser
 ```
 Далее от вас потребуют вести имя суперпользователя, его почту, и пароль
 
 ## команды для загрузки ингридиентов из ingredients.json
-```
-docker-compose backend web python manage.py shell
-```
-И пишем там:
-```
-import json
-from api.models import Ingredient
+Файл должен находится в директории backend/data в расширении json
 
-with open('data/ingredients.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
-    for ingredient in data:
-        Ingredient.objects.create(name=ingredient["name"],
-                                  measurement_unit=ingredient[
-                                      "measurement_unit"])
+```
+docker-compose exec backend python manage.py load_ingredients  # загрузит из файла по умолчанию ingredients.json
+docker-compose exec backend python manage.py load_ingredients ("Название файла")
 ```
 
-## команда для заполнения базы начальными данными(Еще не добавил)
+## команда для заполнения базы начальными данными
 ```
-docker-compose backend web python manage.py loaddata fixtures.json 
+docker-compose backend web python manage.py loaddata data/init_data.json 
 ```
 Данная команда загрузит начальные данные из фиксатуры
 
-Публичный IP: 62.84.113.196
+# Проект в интернете
+Проект запущен и доступен по [адресу](http://62.84.113.196)

@@ -1,16 +1,17 @@
 import io
 
-from django.http import FileResponse
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
-from api.filters import AuthorAndTagFilter
+from api.filters import AuthorAndTagFilter, IngredientSearchFilter
 from api.models import (Cart, Favorite, Ingredient, IngredientAmount, Recipe,
                         Tag)
 from api.pagination import LimitPageNumberPagination
@@ -29,7 +30,7 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (SearchFilter,)
+    filter_backends = (IngredientSearchFilter,)
     search_fields = ('^name',)
 
 
@@ -64,13 +65,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'],
             permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request):
-        buffer = io.BytesIO()
-        page = canvas.Canvas(buffer)
         final_list = {}
         ingredients = IngredientAmount.objects.filter(
             recipe__cart__user=request.user).values_list(
             'ingredient__name', 'ingredient__measurement_unit',
-            'ingredient__amount')
+            'amount')
         for item in ingredients:
             name = item[0]
             if name not in final_list:
@@ -80,7 +79,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 }
             else:
                 final_list[name]['amount'] += item[2]
+        pdfmetrics.registerFont(
+            TTFont('Slimamif', 'Slimamif.ttf', 'UTF-8'))
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = ('attachment; '
+                                           'filename="shopping_list.pdf"')
+        page = canvas.Canvas(response)
+        page.setFont('Slimamif', size=24)
         page.drawString(200, 800, 'Список ингредиентов')
+        page.setFont('Slimamif', size=16)
         height = 750
         for i, (name, data) in enumerate(final_list.items(), 1):
             page.drawString(75, height, (f'<{i}> {name} - {data["amount"]}, '
@@ -88,8 +95,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             height -= 25
         page.showPage()
         page.save()
-        return FileResponse(buffer, as_attachment=True,
-                            filename='shop_list.pdf')
+        return response
 
     def add_obj(self, model, user, pk):
         if model.objects.filter(user=user, recipe__id=pk).exists():
