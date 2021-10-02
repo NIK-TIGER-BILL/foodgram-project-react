@@ -27,7 +27,7 @@ class CustomUserViewSet(UserViewSet):
             }, status=status.HTTP_400_BAD_REQUEST)
         if Follow.objects.filter(user=user, author=author).exists():
             return Response({
-                'errors': 'Вы уже подписаны на этого пользователя '
+                'errors': 'Вы уже подписаны на данного пользователя'
             }, status=status.HTTP_400_BAD_REQUEST)
 
         follow = Follow.objects.create(user=user, author=author)
