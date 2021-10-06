@@ -7,19 +7,19 @@ Foodgram сделан для публикации рецептов. Автори
 рецептов.
 
 ## команды для запуска приложения
-Можно использовать с флагами:  
--d (убрать сообщение от логов)  
---build (пересборка)
 ```
 docker-compose up
 docker-compose up -d --build
 ```
-Может пригодится:
+Можно использовать с флагами:  
+-d (убрать сообщение от логов)  
+--build (пересборка)  
+##Может пригодится:
 ```
 docker-compose exec backend python manage.py migrate --noinput # Проведение миграции
 docker-compose exec backend python manage.py collectstatic --no-input  # Сбор статики
 ```
-.env
+##.env
 ```
 DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
 DB_NAME=postgres # имя базы данных
@@ -50,4 +50,4 @@ docker-compose exec backend python manage.py loaddata data/init_data.json
 Данная команда загрузит начальные данные из фиксатуры
 
 # Проект в интернете
-Проект запущен и доступен по [адресу](http://62.84.113.196)
+Проект запущен и доступен по [адресу](http://62.84.113.196) (В данный момент сервер отключен)
