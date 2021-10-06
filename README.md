@@ -14,7 +14,7 @@ docker-compose up -d --build
 Можно использовать с флагами:  
 -d (убрать сообщение от логов)  
 --build (пересборка)  
-##Может пригодится:
+## Может пригодится:
 ```
 docker-compose exec backend python manage.py migrate --noinput # Проведение миграции
 docker-compose exec backend python manage.py collectstatic --no-input  # Сбор статики
