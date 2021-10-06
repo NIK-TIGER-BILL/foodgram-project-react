@@ -19,7 +19,7 @@ docker-compose up -d --build
 docker-compose exec backend python manage.py migrate --noinput # Проведение миграции
 docker-compose exec backend python manage.py collectstatic --no-input  # Сбор статики
 ```
-##.env
+## .env
 ```
 DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
 DB_NAME=postgres # имя базы данных
