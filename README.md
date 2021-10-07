@@ -56,24 +56,24 @@ DB_PORT=5432
 sudo docker-compose up -d --build
 ```
 * После успешной сборки на сервере выполните команды (только после первого деплоя):
-- Соберите статические файлы:
+    - Соберите статические файлы:
 ```
 sudo docker-compose exec backend python manage.py collectstatic --noinput
 ```
-- Применитe миграции:
+    - Применитe миграции:
 ```
 sudo docker-compose exec backend python manage.py migrate --noinput
 ```
-- Загрузите ингридиенты в базу данных (не обязательно)
+    - Загрузите ингридиенты в базу данных (не обязательно)
 ```
 sudo docker-compose exec backend python manage.py loaddata fixtures/ingredients.json
 ```
-- Создать суперпользователя Django:
+    - Создать суперпользователя Django:
 ```
 sudo docker-compose exec backend python manage.py createsuperuser
 ```
-- Проект будет доступен по вашему IP
-- Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
+    - Проект будет доступен по вашему IP
+    - Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
 ```
 DB_ENGINE=<django.db.backends.postgresql>
 DOCKER_PASSWORD=<пароль от DockerHub>
@@ -90,9 +90,9 @@ TELEGRAM_TO=<ID чата, в который придет сообщение>
 TELEGRAM_TOKEN=<токен вашего бота>
 ```
 * Workflow состоит из трёх шагов:
-- Сборка и публикация образа бекенда на DockerHub.
-- Автоматический деплой на удаленный сервер.
-- Отправка уведомления в телеграм-чат.  
+    - Сборка и публикация образа бекенда на DockerHub.
+    - Автоматический деплой на удаленный сервер.
+    - Отправка уведомления в телеграм-чат.  
 
 ## Проект в интернете
 Проект запущен и доступен по [адресу](http://62.84.113.196) (В данный момент сервер отключен)
