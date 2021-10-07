@@ -72,7 +72,7 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     TELEGRAM_TO=<ID чата, в который придет сообщение>
     TELEGRAM_TOKEN=<токен вашего бота>
     ```
-    * Workflow состоит из трёх шагов:
+    Workflow состоит из трёх шагов:
      - Проверка кода на соответствие PEP8
      - Сборка и публикация образа бекенда на DockerHub.
      - Автоматический деплой на удаленный сервер.
