@@ -20,7 +20,7 @@ Foodgram реализован для публикации рецептов. Ав
 ## Подготовка и запуск проекта
 ### Склонировать репозиторий на локальную машину:
 ```
-git clone https://github.com/Viktrols/foodgram-project-react
+git clone https://github.com/NIK-TIGER-BILL/foodgram-project-react
 ```
 ## Для работы с удаленным сервером (на ubuntu):
 ### Выполните вход на свой удаленный сервер
