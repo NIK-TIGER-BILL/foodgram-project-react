@@ -51,6 +51,7 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     DB_HOST=<db>
     DB_PORT=<5432>
     SECRET_KEY=<секретный ключ проекта django>
+    DEBUG=<режим дебага, значение по умолчанию: False>
     ```
 * Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
     ```
@@ -65,6 +66,7 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     DOCKER_USERNAME=<имя пользователя>
     
     SECRET_KEY=<секретный ключ проекта django>
+    DEBUG=<режим дебага, значение по умолчанию: False>
 
     USER=<username для подключения к серверу>
     HOST=<IP сервера>
