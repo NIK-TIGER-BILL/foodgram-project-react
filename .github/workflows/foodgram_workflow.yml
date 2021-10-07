@@ -65,7 +65,6 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-project
             sudo docker-compose stop
             sudo docker-compose rm backend
-
             rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
@@ -76,7 +75,6 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
             echo DEBUG=${{ secrets.DEBUG }} >> .env
             echo DJ_SECRET_KEY=${{ secrets.DJ_SECRET_KEY }} >> .env
-
             sudo docker-compose up -d
 
   telegram_message:
