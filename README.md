@@ -57,38 +57,38 @@ sudo docker-compose up -d --build
 ```
 * После успешной сборки на сервере выполните команды (только после первого деплоя):
     - Соберите статические файлы:
-```
-sudo docker-compose exec backend python manage.py collectstatic --noinput
-```
+    ```
+    sudo docker-compose exec backend python manage.py collectstatic --noinput
+    ```
     - Применитe миграции:
-```
-sudo docker-compose exec backend python manage.py migrate --noinput
-```
+    ```
+    sudo docker-compose exec backend python manage.py migrate --noinput
+    ```
     - Загрузите ингридиенты в базу данных (не обязательно)
-```
-sudo docker-compose exec backend python manage.py loaddata fixtures/ingredients.json
-```
+    ```
+    sudo docker-compose exec backend python manage.py loaddata fixtures/ingredients.json
+    ```
     - Создать суперпользователя Django:
-```
-sudo docker-compose exec backend python manage.py createsuperuser
-```
+    ```
+    sudo docker-compose exec backend python manage.py createsuperuser
+    ```
     - Проект будет доступен по вашему IP
     - Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
-```
-DB_ENGINE=<django.db.backends.postgresql>
-DOCKER_PASSWORD=<пароль от DockerHub>
-DOCKER_USERNAME=<имя пользователя>
-DB_HOST=<db>
-DB_PORT=<5432>
+    ```
+    DB_ENGINE=<django.db.backends.postgresql>
+    DOCKER_PASSWORD=<пароль от DockerHub>
+    DOCKER_USERNAME=<имя пользователя>
+    DB_HOST=<db>
+    DB_PORT=<5432>
 
-USER=<username для подключения к серверу>
-HOST=<IP сервера>
-PASSPHRASE=<пароль для сервера, если он установлен>
-SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
+    USER=<username для подключения к серверу>
+    HOST=<IP сервера>
+    PASSPHRASE=<пароль для сервера, если он установлен>
+    SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
 
-TELEGRAM_TO=<ID чата, в который придет сообщение>
-TELEGRAM_TOKEN=<токен вашего бота>
-```
+    TELEGRAM_TO=<ID чата, в который придет сообщение>
+    TELEGRAM_TOKEN=<токен вашего бота>
+    ```
 * Workflow состоит из трёх шагов:
     - Сборка и публикация образа бекенда на DockerHub.
     - Автоматический деплой на удаленный сервер.
