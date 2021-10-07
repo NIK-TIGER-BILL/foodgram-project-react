@@ -60,14 +60,15 @@ sudo docker-compose up -d --build
     ```
     sudo docker-compose exec backend python manage.py collectstatic --noinput
     ```
-    - Применитe миграции:
+    - Примените миграции:
     ```
     sudo docker-compose exec backend python manage.py migrate --noinput
     ```
-    - Загрузите ингридиенты в базу данных (не обязательно)
+    - Загрузите ингридиенты  в базу данных (необязательно)
     ```
-    sudo docker-compose exec backend python manage.py loaddata fixtures/ingredients.json
+    sudo docker-compose exec backend python manage.py load_ingredients <Название файла из директории data>
     ```
+    *Если файл не указывать, по умолчанию выберется ingredients.json*
     - Создать суперпользователя Django:
     ```
     sudo docker-compose exec backend python manage.py createsuperuser
@@ -90,6 +91,7 @@ sudo docker-compose up -d --build
     TELEGRAM_TOKEN=<токен вашего бота>
     ```
 * Workflow состоит из трёх шагов:
+    - Проверка кода на соответствие PEP8
     - Сборка и публикация образа бекенда на DockerHub.
     - Автоматический деплой на удаленный сервер.
     - Отправка уведомления в телеграм-чат.  
