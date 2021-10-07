@@ -50,7 +50,7 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     DB_PORT=<5432>
     SECRET_KEY=<секретный ключ проекта django>
     ```
-  * Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
+* Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
     ```
     DB_ENGINE=<django.db.backends.postgresql>
     DB_NAME=<имя базы данных postgres>
@@ -72,11 +72,11 @@ scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
     TELEGRAM_TO=<ID чата, в который придет сообщение>
     TELEGRAM_TOKEN=<токен вашего бота>
     ```
-* Workflow состоит из трёх шагов:
-    - Проверка кода на соответствие PEP8
-    - Сборка и публикация образа бекенда на DockerHub.
-    - Автоматический деплой на удаленный сервер.
-    - Отправка уведомления в телеграм-чат.  
+    * Workflow состоит из трёх шагов:
+        - Проверка кода на соответствие PEP8
+        - Сборка и публикация образа бекенда на DockerHub.
+        - Автоматический деплой на удаленный сервер.
+        - Отправка уведомления в телеграм-чат.  
   
 * На сервере соберите docker-compose:
 ```
