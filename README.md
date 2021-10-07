@@ -1,7 +1,7 @@
 # Проект Foodgram
-![example workflow](https://github.com/NIK-TIGER-BILL/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)  
+![example workflow](https://github.com/NIK-TIGER-BILL/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg) (falling так как сервер в данный момент отключен)  
 
-Foodgram сделан для публикации рецептов. Авторизованные пользователи
+Foodgram реализован для публикации рецептов. Авторизованные пользователи
 могут подписываться на понравившихся авторов, добавлять рецепты в избранное,
 в покупки, скачать список покупок ингредиентов для добавленных в покупки
 рецептов.
