@@ -17,48 +17,85 @@ Foodgram реализован для публикации рецептов. Ав
 в покупки, скачать список покупок ингредиентов для добавленных в покупки
 рецептов.
 
-## команды для запуска приложения
+## Подготовка и запуск проекта
+### Склонировать репозиторий на локальную машину:
 ```
-docker-compose up
-docker-compose up -d --build
+git clone https://github.com/Viktrols/foodgram-project-react
 ```
-Можно использовать с флагами:  
--d (убрать сообщение от логов)  
---build (пересборка)  
-## Может пригодится:
-```
-docker-compose exec backend python manage.py migrate --noinput # Проведение миграции
-docker-compose exec backend python manage.py collectstatic --no-input  # Сбор статики
-```
-## .env
-```
-DB_ENGINE=django.db.backends.postgresql # указываем, что работаем с postgresql
-DB_NAME=postgres # имя базы данных
-POSTGRES_USER=postgres # логин для подключения к базе данных
-POSTGRES_PASSWORD=*** # пароль для подключения к БД(установите свой)
-DB_HOST=db # название сервиса
-DB_PORT=5432 # порт для подключения к БД
-DJ_SECRET_KEY=*** # ключ django
-```
-## команда для создания суперпользователя
-```
-docker-compose exec backend python manage.py createsuperuser
-```
-Далее от вас потребуют вести имя суперпользователя, его почту, и пароль
+## Для работы с удаленным сервером (на ubuntu):
+### Выполните вход на свой удаленный сервер
 
-## команды для загрузки ингридиентов из ingredients.json
-Файл должен находится в директории backend/data в расширении json
+### Установите docker на сервер:
+```
+sudo apt install docker.io 
+```
+### Установите docker-compose на сервер:
+```
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+```
+### Локально отредактируйте файл infra/nginx.conf и в строке server_name впишите свой IP
+### Скопируйте файлы docker-compose.yml и nginx.conf из директории infra на сервер:
+```
+scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
+scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
+```
+### На сервере создайте файл .env (nano .env) и заполните переменные окружения (или создайте этот файл локально и скопируйте файл по аналогии с предыдущим пунктом):
+```
+SECRET_KEY=<секретный ключ проекта django>
+
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=<имя базы данных postgres>
+DB_USER=<пользователь бд>
+DB_PASSWORD=<пароль>
+DB_HOST=db
+DB_PORT=5432
 
 ```
-docker-compose exec backend python manage.py load_ingredients  # загрузит из файла по умолчанию ingredients.json
-docker-compose exec backend python manage.py load_ingredients ("Название файла")
+### Создайте на сервере файл pg.env для работы с контейнером postgres и поместите в него значения переменных окружения:
 ```
+POSTGRES_PASSWORD=<пароль для базы данных> - обязательный параметр
+DB_NAME=<название базы данных> - необязательный параметр (по умолчанию будет postgres)
+POSTGRES_USER=<имя пользователя> - необязательный параметр (по умолчанию будет postgres)
+```
+### На сервере соберите docker-compose:
+```
+sudo docker-compose up -d --build
+```
+### После успешной сборки на сервере выполните команды (только после первого деплоя):
+#### Соберите статические файлы:
+```
+sudo docker-compose exec backend python manage.py collectstatic --noinput
+```
+#### Применитe миграции:
+```
+sudo docker-compose exec backend python manage.py migrate --noinput
+```
+#### Загрузите ингридиенты в базу данных (не обязательно)
+```
+sudo docker-compose exec backend python manage.py loaddata fixtures/ingredients.json
+```
+#### Создать суперпользователя Django:
+```
+sudo docker-compose exec backend python manage.py createsuperuser
+```
+### Проект будет доступен по вашему IP
+### Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
+```
+DOCKER_PASSWORD=<пароль от DockerHub>
+DOCKER_USERNAME=<имя пользователя>
 
-## команда для заполнения базы начальными данными
-```
-docker-compose exec backend python manage.py loaddata data/init_data.json 
-```
-Данная команда загрузит начальные данные из фиксатуры
+USER=<username для подключения к серверу>
+HOST=<IP сервера>
+PASSPHRASE=<пароль для сервера, если он установлен>
+SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
 
-# Проект в интернете
+TG_CHAT_ID=<ID чата, в который придет сообщение>
+TELEGRAM_TOKEN=<токен вашего бота>
+```
+## Workflow состоит из трёх шагов:
+- Сборка и публикация образа бекенда на DockerHub.
+- Автоматический деплой на удаленный сервер.
+- Отправка уведомления в телеграм-чат.  
+
+## Проект в интернете
 Проект запущен и доступен по [адресу](http://62.84.113.196) (В данный момент сервер отключен)
