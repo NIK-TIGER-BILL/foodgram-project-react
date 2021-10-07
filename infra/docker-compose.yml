@@ -19,9 +19,7 @@ services:
       - ./.env
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: niktigerbill/foodgram_frontend
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
