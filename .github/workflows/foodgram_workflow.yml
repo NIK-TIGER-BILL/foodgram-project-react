@@ -1,6 +1,9 @@
 name: Django-app workflow
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - '**/README.md'
 
 jobs:
   tests:
@@ -61,6 +64,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-project
             sudo docker-compose stop
             sudo docker-compose rm backend
+            rm .env
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
@@ -68,6 +72,7 @@ jobs:
             echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
             echo DB_HOST=${{ secrets.DB_HOST }} >> .env
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            echo DEBUG=${{ secrets.DEBUG }} >> .env
             echo DJ_SECRET_KEY=${{ secrets.DJ_SECRET_KEY }} >> .env
             sudo docker-compose up -d
 
