@@ -39,18 +39,45 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
 scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
 ```
-* На сервере создайте файл .env (nano .env) и заполните переменные окружения (или создайте этот файл локально и скопируйте файл по аналогии с предыдущим пунктом):
-```
-SECRET_KEY=<секретный ключ проекта django>
 
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=<имя базы данных postgres>
-DB_USER=<пользователь бд>
-DB_PASSWORD=<пароль>
-DB_HOST=db
-DB_PORT=5432
+* Cоздайте .env файл и впишите:
+    ```
+    DB_ENGINE=<django.db.backends.postgresql>
+    DB_NAME=<имя базы данных postgres>
+    DB_USER=<пользователь бд>
+    DB_PASSWORD=<пароль>
+    DB_HOST=<db>
+    DB_PORT=<5432>
+    SECRET_KEY=<секретный ключ проекта django>
+    ```
+  * Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
+    ```
+    DB_ENGINE=<django.db.backends.postgresql>
+    DB_NAME=<имя базы данных postgres>
+    DB_USER=<пользователь бд>
+    DB_PASSWORD=<пароль>
+    DB_HOST=<db>
+    DB_PORT=<5432>
+    
+    DOCKER_PASSWORD=<пароль от DockerHub>
+    DOCKER_USERNAME=<имя пользователя>
+    
+    SECRET_KEY=<секретный ключ проекта django>
 
-```
+    USER=<username для подключения к серверу>
+    HOST=<IP сервера>
+    PASSPHRASE=<пароль для сервера, если он установлен>
+    SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
+
+    TELEGRAM_TO=<ID чата, в который придет сообщение>
+    TELEGRAM_TOKEN=<токен вашего бота>
+    ```
+* Workflow состоит из трёх шагов:
+    - Проверка кода на соответствие PEP8
+    - Сборка и публикация образа бекенда на DockerHub.
+    - Автоматический деплой на удаленный сервер.
+    - Отправка уведомления в телеграм-чат.  
+  
 * На сервере соберите docker-compose:
 ```
 sudo docker-compose up -d --build
@@ -74,27 +101,6 @@ sudo docker-compose up -d --build
     sudo docker-compose exec backend python manage.py createsuperuser
     ```
     - Проект будет доступен по вашему IP
-    - Для работы с Workflow добавьте в Secrets GitHub переменные окружения для работы:
-    ```
-    DB_ENGINE=<django.db.backends.postgresql>
-    DOCKER_PASSWORD=<пароль от DockerHub>
-    DOCKER_USERNAME=<имя пользователя>
-    DB_HOST=<db>
-    DB_PORT=<5432>
-
-    USER=<username для подключения к серверу>
-    HOST=<IP сервера>
-    PASSPHRASE=<пароль для сервера, если он установлен>
-    SSH_KEY=<ваш SSH ключ (для получения команда: cat ~/.ssh/id_rsa)>
-
-    TELEGRAM_TO=<ID чата, в который придет сообщение>
-    TELEGRAM_TOKEN=<токен вашего бота>
-    ```
-* Workflow состоит из трёх шагов:
-    - Проверка кода на соответствие PEP8
-    - Сборка и публикация образа бекенда на DockerHub.
-    - Автоматический деплой на удаленный сервер.
-    - Отправка уведомления в телеграм-чат.  
 
 ## Проект в интернете
 Проект запущен и доступен по [адресу](http://62.84.113.196) (В данный момент сервер отключен)
