@@ -1,5 +1,5 @@
 # Проект Foodgram
-![example workflow](https://github.com/NIK-TIGER-BILL/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg) *(falling так как сервер в данный момент отключен, деплой не выполняется)*  
+![example workflow](https://github.com/NIK-TIGER-BILL/foodgram-project-react/actions/workflows/foodgram_workflow.yml/badge.svg)
 [![Python](https://img.shields.io/badge/-Python-464646?style=flat-square&logo=Python)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/-Django-464646?style=flat-square&logo=Django)](https://www.djangoproject.com/)
 [![Django REST Framework](https://img.shields.io/badge/-Django%20REST%20Framework-464646?style=flat-square&logo=Django%20REST%20Framework)](https://www.django-rest-framework.org/)
@@ -40,7 +40,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 scp docker-compose.yml <username>@<host>:/home/<username>/docker-compose.yml
 scp nginx.conf <username>@<host>:/home/<username>/nginx.conf
 ```
-В настройках nginx.conf вписать IP сервера в server_name
 
 * Cоздайте .env файл и впишите:
     ```
@@ -105,4 +104,4 @@ sudo docker-compose up -d --build
     - Проект будет доступен по вашему IP
 
 ## Проект в интернете
-Проект запущен и доступен по [адресу](http://62.84.113.196) (В данный момент сервер отключен)
+Проект запущен и доступен по [адресу](http://62.84.118.0)
