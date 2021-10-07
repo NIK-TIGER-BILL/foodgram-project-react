@@ -61,6 +61,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram-project
             sudo docker-compose stop
             sudo docker-compose rm backend
